@@ -12,4 +12,7 @@ public class Test {
 		throw new Exception("Oops.");
 	}
 	
+	public static void main(){
+		System.out.println("teste de refleccao!");
+	}
 }
