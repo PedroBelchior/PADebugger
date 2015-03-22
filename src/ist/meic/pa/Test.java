@@ -7,8 +7,9 @@ public class Test {
 		this.counter = 0;
 	}
 	
-	public void add() {
+	public void add() throws Exception {
 		this.counter = this.counter+1;
+		throw new Exception("Oops.");
 	}
 	
 }
