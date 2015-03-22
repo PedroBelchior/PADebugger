@@ -1,18 +1,27 @@
 package ist.meic.pa;
 
 public class Test {
-	public int counter;
+	public static int counter;
 	
 	Test(){
-		this.counter = 0;
+		counter = 0;
 	}
-	
-	public void add() throws Exception {
-		this.counter = this.counter+1;
+	public static void del() throws Exception {
+		counter = 0;
+		throw new Exception("d");
+	}
+	public static void add() throws Exception {
+		counter = counter+1;
+		del();
 		throw new Exception("Oops.");
 	}
 	
-	public static void main(){
+	public static void main(String[] args) throws Exception {
 		System.out.println("teste de refleccao!");
+		try{
+			add();
+		} catch (Exception e) { 
+			e.printStackTrace();
+		}
 	}
 }

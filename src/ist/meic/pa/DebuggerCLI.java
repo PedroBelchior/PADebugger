@@ -23,8 +23,7 @@ public class DebuggerCLI {
 		classLoader.addTranslator(pool, translator); 
 		String[] restArgs = new String[args.length - 1] ;
 		System.arraycopy(args, 1, restArgs, 0, restArgs.length);
-		classLoader.loadClass("Test");
-		//classLoader.run("Test", null );
+		classLoader.run("ist.meic.pa.Test", null );
 	}
 
 	public void Abort(){

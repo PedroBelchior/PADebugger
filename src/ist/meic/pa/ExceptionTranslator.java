@@ -2,11 +2,12 @@ package ist.meic.pa;
 import javassist.*;
 
 public class ExceptionTranslator implements Translator {
-
+	
 	@Override
 	public void onLoad(ClassPool arg0, String arg1) throws NotFoundException,
 			CannotCompileException {
 		// TODO Auto-generated method stub
+		
 		
 	}
 
