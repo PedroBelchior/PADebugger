@@ -49,6 +49,11 @@ public class StackSingleton {
 		
 	}
 	
+	public static TraceObject returnlastObj() {
+		//System.out.println(history.lastElement().objecto + " ultimo elemento");
+		return history.lastElement();
+	}
+	
 	public static TraceObject restoreState() {
 		//undo all actions until size == state
 		TraceObject popObj = history.pop();

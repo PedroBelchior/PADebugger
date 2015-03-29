@@ -14,7 +14,7 @@ public class DebuggerCLI {
 	 */
 	public static void main(String[] args) throws Throwable {
 		try {
-			//Integer a = new Integer("abc");
+			//Integer a = new Integer("abc");;
 			System.out.println("test!");
 			Translator translator = new ExceptionTranslator();
 			ClassPool pool = ClassPool.getDefault();
@@ -65,10 +65,12 @@ public class DebuggerCLI {
 				}
 				// INVOCAR METODO COM ARGUMENTOS
 				m = classe.getMethod(metodo,arrayDasClassesDosArgumentos);
+				EvalShell.setM(m);
 				returnValue = m.invoke(classObj, args);
 			} else {
 				// INVOCAR METODO SEM ARGUMENTOS
 				m = classe.getMethod(metodo);
+				EvalShell.setM(m);
 				returnValue = m.invoke(classObj);
 			}
 			
@@ -93,30 +95,12 @@ public class DebuggerCLI {
 		        }
 			}*/
 			
-			EvalShell.shell();
-			return e.getCause();
+			return EvalShell.shell((Exception) e.getCause());
+			//e.getCause();
 		} catch (Exception e) {
 			System.out.println(e.getCause());
 			//EvalShell.shell();
 			return e;
 		}
 	}
-	
-	public void Abort(){
-		System.exit(0);
-	}
-	
-	public void Info(){}
-	
-	public void Throw(){}
-	
-	public void Return(int value){}
-	
-	public void Get(String fName){}
-	
-	public void Set(String fName){}
-	
-	public void Retry(){}
-
-
 }
