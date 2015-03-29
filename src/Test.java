@@ -15,8 +15,9 @@ public class Test {
 		
 		counter = counter+1;
 		int a = Integer.parseInt("abc");
+		System.out.println(a);
 		del();
-		//throw new Exception("Oops.");
+		throw new Exception("Oops.");
 	}
 	
 	public static void main(String[] args) throws Exception {

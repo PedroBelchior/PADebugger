@@ -91,6 +91,10 @@ public class DebuggerCLI {
 		        if (s.equalsIgnoreCase("return")) {
 		        	break;
 		        }
+		        if (s.equalsIgnoreCase("rethrow")){
+		        	throw (Exception) e.getCause();
+		        }
+
 			}
 			return e.getCause();
 		} catch (Exception e) {
