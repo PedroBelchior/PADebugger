@@ -47,63 +47,48 @@ public class DebuggerCLI {
 		try {
 		
 			Method m;
-			Object returnValue;
+			Object returnValue = null;
 			boolean construtorBasico = false;
-			//StackSingleton.getInstance().storePrevious(classObj, classe.getName(), metodo);
-			// PRINTS INICIAIS
+			// PRINTS INICIAIS - APAGAR PARA PRODUCAO
 			System.out.println("Chamada ao FazTudo : " + classe.getName() + " . " + metodo);					
 			System.out.println("Esta chamada tem "+args.length+" argumento(s).");
-			// CRIAR O ARRAY COM AS CLASSES DOS ARGUMENTOS
-			Class<?>[] arrayDasClassesDosArgumentos = new Class<?>[args.length];
-			for (int i = 0; i < args.length; i++) {
-				arrayDasClassesDosArgumentos[i] = args[i].getClass();
-				System.out.println("Argumento "+i+" do tipo: "+args[i].getClass().getName());
-			}
-			// PRINTS AOS CONSTRUTORES
-			for (Constructor<?> con : classe.getDeclaredConstructors()) {
-				System.out.print(con.getName() + "(");
-				for (Class<?> cla : con.getParameterTypes())
-					System.out.print(cla.getName()+",");
-				System.out.println(")");
-				if (con.getParameterTypes().length == 0) {
-					System.out.println("Esta Classe Tem Construtores Sem Argumentos");
-					construtorBasico = true;
-				}
-			}
+
+			// GUARDAR ACESSO AO OBJECTO E INVOCACAO DE METODO NA STACK
 			
-			// INICIALIZAR O OBJECTO ATRAVES DOS CONSTRUTORES
-/*			if (classObj == null) {
-				System.out.println("antes da excepcao : "+classe.getName());
-				if (construtorBasico) classObj = classe.newInstance();
-				else {
-					Constructor<?> constructor = classe.getConstructor(arrayDasClassesDosArgumentos);
-					classObj = constructor.newInstance(args);
-				}
-				System.out.println(classObj.getClass().getName());
-			}*/
-			returnValue = null;
+			//StackSingleton.getInstance().storePrevious(classe, classe.getClass().getName(), metodo);
+			//StackSingleton.getInstance().currentState();
+			
+			// INVOCACAO DO METODO VARIA EM FUNCAO DA EXISTENCIA DE ARGUMENTOS
 			if (args.length > 0) {
+				// CRIAR O ARRAY COM AS CLASSES DOS ARGUMENTOS
+				Class<?>[] arrayDasClassesDosArgumentos = new Class<?>[args.length];
+				for (int i = 0; i < args.length; i++) {
+					arrayDasClassesDosArgumentos[i] = args[i].getClass();
+					System.out.println("Argumento "+i+" do tipo: "+args[i].getClass().getName());
+				}
+				// INVOCAR METODO COM ARGUMENTOS
 				m = classe.getMethod(metodo,arrayDasClassesDosArgumentos);
 				returnValue = m.invoke(classObj, args);
-			} else if (args.length == 0){
+			} else {
+				// INVOCAR METODO SEM ARGUMENTOS
 				m = classe.getMethod(metodo);
 				returnValue = m.invoke(classObj);
 			}
 			
-			//StackSingleton.getInstance().storePrevious(classe, classe.getClass().getName(), metodo);
-			//StackSingleton.getInstance().currentState();
+			// SE NAO FORAM LANCADAS EXCEPCOES, REMOVER ESTA INVOCACAO DA STACK
+			
 			//StackSingleton.getInstance().restoreState();
 			//StackSingleton.getInstance().currentState();
-			
 			 
 			return returnValue;
 		} catch (InvocationTargetException e) {
+			// TODAS AS EXCEPCOES LANCADAS ATRAVES DE REFLEXAO VÊM DENTRO DE INVOCATIONTARGETEXCEPTION
 			System.out.println(e.getCause());
-			throw e.getCause();
+			return e.getCause();
 		} catch (Exception e) {
 			System.out.println(e.getCause());
 			//EvalShell.shell();
-			throw e;
+			return e;
 		}
 	}
 	
