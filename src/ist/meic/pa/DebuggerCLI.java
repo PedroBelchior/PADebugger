@@ -1,10 +1,7 @@
 package ist.meic.pa;
 import javassist.*;
-import javassist.CannotCompileException;
-import javassist.ClassPool;
-import javassist.Loader;
-import javassist.NotFoundException;
-import javassist.Translator;
+import java.io.InputStreamReader;
+import java.io.BufferedReader;
 import java.lang.reflect.*;
 
 public class DebuggerCLI {
@@ -84,6 +81,17 @@ public class DebuggerCLI {
 		} catch (InvocationTargetException e) {
 			// TODAS AS EXCEPCOES LANCADAS ATRAVES DE REFLEXAO VÊM DENTRO DE INVOCATIONTARGETEXCEPTION
 			System.out.println(e.getCause());
+			while (true) {
+				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		        System.out.print("> ");
+		        String s = br.readLine();
+		        if (s.equalsIgnoreCase("info")) {
+					StackSingleton.getInstance().currentState();
+				}
+		        if (s.equalsIgnoreCase("return")) {
+		        	break;
+		        }
+			}
 			return e.getCause();
 		} catch (Exception e) {
 			System.out.println(e.getCause());
