@@ -54,5 +54,5 @@ public class StackSingleton {
 		TraceObject popObj = history.pop();
 		return popObj;
 	}
-	//public stack void push();
+	//public stack void push();;
 }
