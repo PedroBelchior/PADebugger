@@ -14,7 +14,7 @@ public class DebuggerCLI {
 	 */
 	public static void main(String[] args) throws Throwable {
 		try {
-			//Integer a = new Integer("abc");;
+			//Integer a = new Integer("abc");
 			System.out.println("test!");
 			Translator translator = new ExceptionTranslator();
 			ClassPool pool = ClassPool.getDefault();
@@ -52,7 +52,7 @@ public class DebuggerCLI {
 
 			// GUARDAR ACESSO AO OBJECTO E INVOCACAO DE METODO NA STACK
 			
-			//StackSingleton.getInstance().storePrevious(classe, classe.getClass().getName(), metodo);
+			StackSingleton.getInstance().storePrevious(classObj, classe.getName(), metodo, args);
 			//StackSingleton.getInstance().currentState();
 			
 			// INVOCACAO DO METODO VARIA EM FUNCAO DA EXISTENCIA DE ARGUMENTOS
@@ -79,9 +79,9 @@ public class DebuggerCLI {
 			 
 			return returnValue;
 		} catch (InvocationTargetException e) {
-			// TODAS AS EXCEPCOES LANCADAS ATRAVES DE REFLEXAO VÃŠM DENTRO DE INVOCATIONTARGETEXCEPTION
+			// TODAS AS EXCEPCOES LANCADAS ATRAVES DE REFLEXAO VæM DENTRO DE INVOCATIONTARGETEXCEPTION
 			System.out.println(e.getCause());
-			while (true) {
+			/*while (true) {
 				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		        System.out.print("> ");
 		        String s = br.readLine();
@@ -91,11 +91,9 @@ public class DebuggerCLI {
 		        if (s.equalsIgnoreCase("return")) {
 		        	break;
 		        }
-		        if (s.equalsIgnoreCase("rethrow")){
-		        	throw (Exception) e.getCause();
-		        }
-
-			}
+			}*/
+			
+			EvalShell.shell();
 			return e.getCause();
 		} catch (Exception e) {
 			System.out.println(e.getCause());

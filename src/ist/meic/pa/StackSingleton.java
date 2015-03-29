@@ -1,4 +1,5 @@
 package ist.meic.pa;
+import java.lang.reflect.*;
 import java.util.Stack;
 
 public class StackSingleton {
@@ -17,22 +18,34 @@ public class StackSingleton {
 	}
 	
 	
-	public static void storePrevious(Object object, String className, String fieldName) {
-		history.push(new TraceObject(object, className, fieldName));
+	public static void storePrevious(Object object, String className, String metodo, Object[] args) {
+		history.push(new TraceObject(object, className, metodo, args));
 	}
 	
 	public static void currentState() {
-		
-		System.out.println("Imprimir a Stack");
-		Object obj = history.get(0).objecto;
+	
+		Object obj = history.lastElement().objecto;
 		System.out.println("Called Object:" + obj);
-		System.out.println("Fields:" + obj.getClass().getDeclaredFields());
-		
-		for(int i = 0; i < history.size(); i++) {
-			System.out.println(history.get(i).classe);
+		Field[] field = null;
+		if(obj != null) {
+			field = obj.getClass().getDeclaredFields();
+			
+			for(int k = 0; k < field.length; k++) {
+				System.out.println("Fields:" + field[k].getName());
+			}
 		}
 		
-		System.out.println("Fim da ImpressÃ£o!");
+		for(int i = history.size() - 1; i >= 0; i--) {
+			TraceObject tmpObj = history.get(i);
+			System.out.print(tmpObj.classe + "." + tmpObj.metodonome + "(");
+			for (int j = 0; j < tmpObj.argumentos.length; j++){
+				if (j > 1) System.out.print(",");
+				System.out.print(tmpObj.argumentos[j]);
+			}
+			System.out.println(")");
+		}
+		
+		System.out.println("Fim da Impress‹o!");
 		
 	}
 	
