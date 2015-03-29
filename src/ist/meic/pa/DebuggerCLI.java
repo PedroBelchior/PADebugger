@@ -17,7 +17,7 @@ public class DebuggerCLI {
 	 */
 	public static void main(String[] args) throws Throwable {
 		try {
-			Integer a = new Integer("abc");
+			//Integer a = new Integer("abc");
 			System.out.println("test!");
 			Translator translator = new ExceptionTranslator();
 			ClassPool pool = ClassPool.getDefault();
@@ -43,7 +43,7 @@ public class DebuggerCLI {
 		System.out.println(args.length);
 	} 
 	
-	public static Object faztudo(Object classObj, Class<?> classe, String metodo, Object[] args) throws Exception {
+	public static Object faztudo(Object classObj, Class<?> classe, String metodo, Object[] args) throws Throwable {
 		try {
 		
 			Method m;
@@ -72,7 +72,7 @@ public class DebuggerCLI {
 			}
 			
 			// INICIALIZAR O OBJECTO ATRAVES DOS CONSTRUTORES
-			if (classObj == null) {
+/*			if (classObj == null) {
 				System.out.println("antes da excepcao : "+classe.getName());
 				if (construtorBasico) classObj = classe.newInstance();
 				else {
@@ -80,14 +80,13 @@ public class DebuggerCLI {
 					classObj = constructor.newInstance(args);
 				}
 				System.out.println(classObj.getClass().getName());
-			}
+			}*/
 			returnValue = null;
 			if (args.length > 0) {
 				m = classe.getMethod(metodo,arrayDasClassesDosArgumentos);
 				returnValue = m.invoke(classObj, args);
 			} else if (args.length == 0){
 				m = classe.getMethod(metodo);
-				m.setAccessible(true);
 				returnValue = m.invoke(classObj);
 			}
 			
@@ -98,8 +97,11 @@ public class DebuggerCLI {
 			
 			 
 			return returnValue;
+		} catch (InvocationTargetException e) {
+			System.out.println(e.getCause());
+			throw e.getCause();
 		} catch (Exception e) {
-			System.out.println(e);
+			System.out.println(e.getCause());
 			//EvalShell.shell();
 			throw e;
 		}
