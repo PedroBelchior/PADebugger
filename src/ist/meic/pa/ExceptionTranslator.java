@@ -1,20 +1,42 @@
 package ist.meic.pa;
-import javassist.*;
+import javassist.CannotCompileException;
+import javassist.ClassPool;
+import javassist.CtMethod;
+import javassist.NotFoundException;
+import javassist.Translator;
+import javassist.expr.ExprEditor;
+import javassist.expr.MethodCall;
 
 public class ExceptionTranslator implements Translator {
 	
 	@Override
 	public void onLoad(ClassPool arg0, String arg1) throws NotFoundException,
 			CannotCompileException {
-		// TODO Auto-generated method stub
-		
-		
-	}
-
+		if (	arg1.startsWith("ist.meic.pa.") || 
+				arg1.startsWith("java.") || 
+				arg1.startsWith("javassist."))
+			return;
+		System.out.println("O translator carregou a class : "+arg1);
+		for(CtMethod cm : ClassPool.getDefault().get(arg1).getDeclaredMethods()) {
+			System.out.println("got in : "+cm.getName());
+			cm.instrument(new ExprEditor(){
+				public void edit(MethodCall m) throws CannotCompileException {
+						try {
+							System.out.println("O translator substituiu uma chamada a " + m.getMethod() + " em "+ m.getFileName() + ":" + m.getLineNumber());
+							m.replace("{ $_ = ($r) ist.meic.pa.DebuggerCLI.faztudo($0,$class,\"" + m.getMethodName() + "\",$args); }");
+						} catch (NotFoundException e) {
+							e.printStackTrace();
+							return;
+						}
+				}
+			});
+		}
+	}	
+	
 	@Override
 	public void start(ClassPool arg0) throws NotFoundException,
 			CannotCompileException {
-		// TODO Auto-generated method stub
+			
 		
 	}
 
