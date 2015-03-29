@@ -23,8 +23,12 @@ public class DebuggerCLI {
 			String[] restArgs = new String[args.length - 1] ;
 			classLoader.run("Test", null);
 			System.arraycopy(args, 1, restArgs, 0, restArgs.length);
+			System.out.println("Exiting program...");
 		} catch (Exception e) {
-			throw e;
+			System.out.println(e);
+			StackSingleton.getInstance().currentState();
+			System.out.println("Exception reached the top level, exiting program...");
+			return;
 		}
 	}
 	
@@ -53,7 +57,6 @@ public class DebuggerCLI {
 			// GUARDAR ACESSO AO OBJECTO E INVOCACAO DE METODO NA STACK
 			
 			StackSingleton.getInstance().storePrevious(classObj, classe.getName(), metodo, args);
-			//StackSingleton.getInstance().currentState();
 			
 			// INVOCACAO DO METODO VARIA EM FUNCAO DA EXISTENCIA DE ARGUMENTOS
 			if (args.length > 0) {
@@ -76,30 +79,15 @@ public class DebuggerCLI {
 			
 			// SE NAO FORAM LANCADAS EXCEPCOES, REMOVER ESTA INVOCACAO DA STACK
 			
-			//StackSingleton.getInstance().restoreState();
-			//StackSingleton.getInstance().currentState();
+			StackSingleton.getInstance().restoreState();
 			 
 			return returnValue;
 		} catch (InvocationTargetException e) {
-			// TODAS AS EXCEPCOES LANCADAS ATRAVES DE REFLEXAO VæM DENTRO DE INVOCATIONTARGETEXCEPTION
 			System.out.println(e.getCause());
-			/*while (true) {
-				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		        System.out.print("> ");
-		        String s = br.readLine();
-		        if (s.equalsIgnoreCase("info")) {
-					StackSingleton.getInstance().currentState();
-				}
-		        if (s.equalsIgnoreCase("return")) {
-		        	break;
-		        }
-			}*/
-			
 			return EvalShell.shell((Exception) e.getCause());
-			//e.getCause();
+
 		} catch (Exception e) {
 			System.out.println(e.getCause());
-			//EvalShell.shell();
 			return e;
 		}
 	}

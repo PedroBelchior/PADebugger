@@ -1,5 +1,6 @@
 package ist.meic.pa;
 import java.lang.reflect.*;
+import java.util.NoSuchElementException;
 import java.util.Stack;
 
 public class StackSingleton {
@@ -23,7 +24,12 @@ public class StackSingleton {
 	}
 	
 	public static void currentState() {
-	
+		if (history.size()==0) {
+			System.out.println("Stack is currently empty.");
+			return;
+		} else {
+			// System.out.println("Stack is currently "+history.size()+" levels deep.");
+		}
 		Object obj = history.lastElement().objecto;
 		System.out.println("Called Object:" + obj);
 		Field[] field = null;
@@ -45,19 +51,21 @@ public class StackSingleton {
 			System.out.println(")");
 		}
 		
-		System.out.println("Fim da Impress‹o!");
+		//System.out.println("Fim da Impressao!");
 		
 	}
 	
 	public static TraceObject returnlastObj() {
-		//System.out.println(history.lastElement().objecto + " ultimo elemento");
-		return history.lastElement();
+		try {		
+			return history.lastElement();
+		} catch (NoSuchElementException nsee) {
+			return null;
+		}
 	}
 	
 	public static TraceObject restoreState() {
-		//undo all actions until size == state
 		TraceObject popObj = history.pop();
 		return popObj;
 	}
-	//public stack void push();;
+
 }

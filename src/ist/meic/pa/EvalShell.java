@@ -47,7 +47,7 @@ public class EvalShell {
 				System.exit(0);
 				
 			} else if(splitresult[0].equalsIgnoreCase("Info")) {
-				System.out.println("Stack aqui");
+				//System.out.println("Stack aqui");
 				StackSingleton.getInstance().currentState();
 				
 			} else if(splitresult[0].equalsIgnoreCase("Set")) {
@@ -98,8 +98,8 @@ public class EvalShell {
 				}				
 				
 			} else if(splitresult[0].equalsIgnoreCase("Throw")) {
+				StackSingleton.getInstance().restoreState();
 				throw ex;
-				
 				
 			} else if(splitresult[0].equalsIgnoreCase("Retry")) {
 								

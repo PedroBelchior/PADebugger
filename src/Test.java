@@ -14,8 +14,8 @@ public class Test {
 	public static void add() throws Exception {
 		
 		counter = counter+1;
-		//int a = Integer.parseInt("abc");
-		//System.out.println(a);
+		int a = Integer.parseInt("abc");
+		System.out.println(a);
 		del();
 		throw new Exception("Oops.");
 	}
