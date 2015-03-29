@@ -23,10 +23,10 @@ public class DebuggerCLI {
 			String[] restArgs = new String[args.length - 1] ;
 			classLoader.run("Test", null);
 			System.arraycopy(args, 1, restArgs, 0, restArgs.length);
-			System.out.println("Exiting program...");
+			System.out.println("Program over, exiting...");
 		} catch (Exception e) {
 			System.out.println(e);
-			StackSingleton.getInstance().currentState();
+			//StackSingleton.getInstance().currentState();
 			System.out.println("Exception reached the top level, exiting program...");
 			return;
 		}

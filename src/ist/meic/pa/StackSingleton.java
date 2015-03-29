@@ -25,7 +25,7 @@ public class StackSingleton {
 	
 	public static void currentState() {
 		if (history.size()==0) {
-			System.out.println("Stack is currently empty.");
+			// System.out.println("Stack is currently empty.");
 			return;
 		} else {
 			// System.out.println("Stack is currently "+history.size()+" levels deep.");

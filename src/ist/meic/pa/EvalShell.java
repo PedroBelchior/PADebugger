@@ -105,11 +105,13 @@ public class EvalShell {
 								
 				
 			} else if(splitresult[0].equalsIgnoreCase("Return")) {
-				//System.out.println(method.getName() + " method name " + method.getReturnType() + " Class " + splitresult[1] + " Valor ");
-				//toObject(method.getReturnType(), splitresult[1]);
-				//System.out.println(toObject(method.getReturnType(), splitresult[1]));
-				return toObject(method.getReturnType(), splitresult[1]);
-				
+				if (splitresult.length < 2)
+					System.out.println("You must provide a return value (ie: 'Return 2')");
+				else {
+					StackSingleton.getInstance().restoreState();
+					return toObject(method.getReturnType(), splitresult[1]);
+				}
+
 			} else if(splitresult[0].equalsIgnoreCase("Help") || splitresult[0].equalsIgnoreCase("?")) {
 				System.out.println("Available Commands:");
 				System.out.println("ABORT : terminates the execution of this application");
