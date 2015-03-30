@@ -24,7 +24,8 @@ public class Test {
 		System.out.println("teste de refleccao!");
 		Test2 test = new Test2();
 		try{
-			test.main1(new String[] {"123"});
+			int a = test.main1(new String[] {"123"});
+			System.out.println("o valor de a: " + a);
 		} catch (Exception e) { 
 			throw e;
 		}

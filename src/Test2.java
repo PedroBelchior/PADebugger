@@ -5,13 +5,12 @@ public class Test2 {
 	
 	//comment
 	
-	public void main1(String[] args) throws Exception {
+	public int main1(String[] args) throws Exception {
 		Test3 teste = new Test3();
 		try {
-			teste.Excepto();
 			throw new Exception("Test2 Exception.");
 		} catch (Exception e) {
-			throw e;
+			return 10;
 		}
 	}
 }

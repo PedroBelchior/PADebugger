@@ -2,6 +2,8 @@ package test;
 
 public class Example2 {
 	
+	public int a = 2;
+	
 	public static int fact(int foo) {
 		if (foo < 1) {
 			throw new RuntimeException("foo < 1");

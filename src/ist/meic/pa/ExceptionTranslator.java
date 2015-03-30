@@ -1,6 +1,9 @@
 package ist.meic.pa;
+import java.io.IOException;
+
 import javassist.CannotCompileException;
 import javassist.ClassPool;
+import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.NotFoundException;
 import javassist.Translator;
@@ -14,22 +17,47 @@ public class ExceptionTranslator implements Translator {
 			CannotCompileException {
 		if (	arg1.startsWith("ist.meic.pa.") || 
 				arg1.startsWith("java.") || 
-				arg1.startsWith("javassist."))
+				arg1.startsWith("javassist.")) 
 			return;
 		System.out.println("O translator carregou a class : "+arg1);
+		try {
+			CtClass cmain = ClassPool.getDefault().get(arg1);
+			CtMethod mmain = cmain.getDeclaredMethod("main");
+			
+			mmain.insertBefore("{ ist.meic.pa.StackSingleton.getInstance().storePrevious(null, $class.getName(),\""+mmain.getName()+"\",$args); }");
+			
+			try {
+				cmain.writeFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			cmain.defrost();
+
+		} catch (NotFoundException nfe) {
+			// do nothing
+		}
+		
 		for(CtMethod cm : ClassPool.getDefault().get(arg1).getDeclaredMethods()) {
 			System.out.println("got in : "+cm.getName());
 			cm.instrument(new ExprEditor(){
 				public void edit(MethodCall m) throws CannotCompileException {
 						try {
 							System.out.println("O translator substituiu uma chamada a " + m.getMethod() + " em "+ m.getFileName() + ":" + m.getLineNumber());
-							m.replace("{ $_ = ($r) ist.meic.pa.DebuggerCLI.faztudo($0,$class,\"" + m.getMethodName() + "\",$args); }");
+							m.replace("{ ist.meic.pa.StackSingleton.getInstance().storePrevious($0, $class.getName(),\"" + m.getMethodName() + "\",$args); " +
+										"$_ = ($r) ist.meic.pa.DebuggerCLI.faztudo($0, $class,\"" + m.getMethodName() + "\",$args); " +
+										"ist.meic.pa.StackSingleton.getInstance().restoreState();}");
 						} catch (NotFoundException e) {
 							e.printStackTrace();
 							return;
 						}
 				}
 			});
+			if (cm.getName().equals("main")) {
+				cm.insertBefore("{ ist.meic.pa.StackSingleton.getInstance().storePrevious(null, $class.getName(),\""+cm.getName()+"\",(String[])$args[0]); }");
+				cm.insertAfter("{ ist.meic.pa.StackSingleton.getInstance().restoreState(); }");
+			}
+
 		}
 	}	
 	

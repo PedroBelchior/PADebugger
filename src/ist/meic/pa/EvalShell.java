@@ -16,10 +16,11 @@ public class EvalShell {
 	}
 	
 	public static Object toObject( Class clazz, String value ) {
+		System.out.println((Integer.TYPE == clazz));
+		if( Integer.class == clazz || Integer.TYPE == clazz) return Integer.parseInt( value );
 	    if( Boolean.class == clazz || Boolean.TYPE == clazz) return Boolean.parseBoolean( value );
 	    if( Byte.class == clazz || Byte.TYPE == clazz) return Byte.parseByte( value );
 	    if( Short.class == clazz || Short.TYPE == clazz) return Short.parseShort( value );
-	    if( Integer.class == clazz || Integer.TYPE == clazz) return Integer.parseInt( value );
 	    if( Long.class == clazz || Long.TYPE == clazz) return Long.parseLong( value );
 	    if( Float.class == clazz || Float.TYPE == clazz) return Float.parseFloat( value );
 	    if( Double.class == clazz || Double.TYPE == clazz) return Double.parseDouble( value );
@@ -102,13 +103,21 @@ public class EvalShell {
 				throw ex;
 				
 			} else if(splitresult[0].equalsIgnoreCase("Retry")) {
-								
+				TraceObject tmpObj = StackSingleton.getInstance().returnlastObj();
+				try {
+					DebuggerCLI.faztudo(tmpObj.objecto, Class.forName(tmpObj.classe), tmpObj.metodonome, tmpObj.argumentos);
+				} catch (Throwable e) {
+					// TODO Auto-generated catch block
+					System.out.println("Error " +  tmpObj.classe + " Not found!");
+					
+				}
 				
 			} else if(splitresult[0].equalsIgnoreCase("Return")) {
 				if (splitresult.length < 2)
 					System.out.println("You must provide a return value (ie: 'Return 2')");
 				else {
 					StackSingleton.getInstance().restoreState();
+					System.out.println(method.getReturnType().getName());
 					return toObject(method.getReturnType(), splitresult[1]);
 				}
 

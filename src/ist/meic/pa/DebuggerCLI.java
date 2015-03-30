@@ -22,13 +22,16 @@ public class DebuggerCLI {
 			classLoader.addTranslator(pool, translator);
 			String[] restArgs = new String[args.length - 1] ;
 			System.arraycopy(args, 1, restArgs, 0, restArgs.length);
+//			ist.meic.pa.StackSingleton.getInstance().storePrevious(null, args[0], "main", restArgs);
+//			ist.meic.pa.StackSingleton.getInstance().currentState();
 			classLoader.run(args[0], restArgs);
+//			ist.meic.pa.StackSingleton.getInstance().restoreState();
+			
 			System.out.println("Program over, exiting...");
 		} catch (Exception e) {
-			System.out.println(e);
+			throw e;
 			//StackSingleton.getInstance().currentState();
-			System.out.println("Exception reached the top level, exiting program...");
-			return;
+			//return;
 		}
 	}
 	
@@ -56,7 +59,7 @@ public class DebuggerCLI {
 
 			// GUARDAR ACESSO AO OBJECTO E INVOCACAO DE METODO NA STACK
 			
-			StackSingleton.getInstance().storePrevious(classObj, classe.getName(), metodo, args);
+			//StackSingleton.getInstance().storePrevious(classObj, classe.getName(), metodo, args);
 			
 			// INVOCACAO DO METODO VARIA EM FUNCAO DA EXISTENCIA DE ARGUMENTOS
 			if (args.length > 0) {
@@ -79,8 +82,8 @@ public class DebuggerCLI {
 			
 			// SE NAO FORAM LANCADAS EXCEPCOES, REMOVER ESTA INVOCACAO DA STACK
 			
-			StackSingleton.getInstance().restoreState();
-			 
+			//StackSingleton.getInstance().restoreState();
+			System.out.println(returnValue.getClass().getName()); 
 			return returnValue;
 		} catch (InvocationTargetException e) {
 			System.out.println(e.getCause());
@@ -88,7 +91,7 @@ public class DebuggerCLI {
 
 		} catch (Exception e) {
 			System.out.println(e.getCause());
-			return e;
+			return EvalShell.shell((Exception) e.getCause());
 		}
 	}
 }

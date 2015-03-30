@@ -31,24 +31,39 @@ public class StackSingleton {
 			// System.out.println("Stack is currently "+history.size()+" levels deep.");
 		}
 		Object obj = history.lastElement().objecto;
-		System.out.println("Called Object:" + obj);
+		System.out.println("Called Object:  " + obj);
 		Field[] field = null;
-		if(obj != null) {
-			field = obj.getClass().getDeclaredFields();
-			
-			for(int k = 0; k < field.length; k++) {
-				System.out.println("Fields:" + field[k].getName());
-			}
-		}
 		
+		
+		try {
+			field = Class.forName(history.lastElement().classe).getDeclaredFields();
+
+			if(field.length > 0) {
+				System.out.print("       Fields:  ");
+			}
+			for(int k = 0; k < field.length; k++) {
+				if(k > 0) System.out.print(" ");
+				System.out.print(field[k].getName());
+			}
+			System.out.println();
+			
+
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+		System.out.println("Call Stack:  ");
 		for(int i = history.size() - 1; i >= 0; i--) {
 			TraceObject tmpObj = history.get(i);
 			System.out.print(tmpObj.classe + "." + tmpObj.metodonome + "(");
 			for (int j = 0; j < tmpObj.argumentos.length; j++){
-				if (j > 1) System.out.print(",");
+				if (j > 0) System.out.print(",");
 				System.out.print(tmpObj.argumentos[j]);
 			}
-			System.out.println(")");
+			System.out.println(") - "+tmpObj.argumentos.length);
 		}
 		
 		//System.out.println("Fim da Impressao!");
