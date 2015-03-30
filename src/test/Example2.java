@@ -2,9 +2,8 @@ package test;
 
 public class Example2 {
 	
-	public int a = 2;
-	
 	public static int fact(int foo) {
+		System.out.println("fact!");
 		if (foo < 1) {
 			throw new RuntimeException("foo < 1");
 		}
@@ -14,7 +13,8 @@ public class Example2 {
 	public static int bar(String arg) {
 		System.out.println("Converting " + arg + " to int.");
 		int ret = Integer.parseInt(arg);
-		System.out.println("Result " + ret);
+		System.out.println("bar1" + ret);
+		//System.out.println("Result " + ret);
 		return ret;
 	}
 	

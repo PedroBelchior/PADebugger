@@ -8,11 +8,11 @@ import java.lang.reflect.Method;
 
 public class EvalShell {
 	
-	public static Method method;
+	public static Method metodo;
 	public EvalShell() {}
 	
 	public static void setM(Method m) {
-		method = m;
+		metodo = m;
 	}
 	
 	public static Object toObject( Class clazz, String value ) {
@@ -109,16 +109,16 @@ public class EvalShell {
 				} catch (Throwable e) {
 					// TODO Auto-generated catch block
 					System.out.println("Error " +  tmpObj.classe + " Not found!");
-					
 				}
 				
 			} else if(splitresult[0].equalsIgnoreCase("Return")) {
 				if (splitresult.length < 2)
 					System.out.println("You must provide a return value (ie: 'Return 2')");
 				else {
-					StackSingleton.getInstance().restoreState();
-					System.out.println(method.getReturnType().getName());
-					return toObject(method.getReturnType(), splitresult[1]);
+					//StackSingleton.getInstance().restoreState();
+					System.out.println("tipo de retorno para o metodo "+metodo.getName()+": " +metodo.getReturnType().getName());
+					System.out.println(toObject(metodo.getReturnType(), splitresult[1]).getClass());
+					return toObject(metodo.getReturnType(), splitresult[1]);
 				}
 
 			} else if(splitresult[0].equalsIgnoreCase("Help") || splitresult[0].equalsIgnoreCase("?")) {
