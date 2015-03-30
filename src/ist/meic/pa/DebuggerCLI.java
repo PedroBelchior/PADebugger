@@ -21,8 +21,8 @@ public class DebuggerCLI {
 			Loader classLoader = new Loader(); 
 			classLoader.addTranslator(pool, translator);
 			String[] restArgs = new String[args.length - 1] ;
-			classLoader.run("Test", null);
 			System.arraycopy(args, 1, restArgs, 0, restArgs.length);
+			classLoader.run(args[0], restArgs);
 			System.out.println("Program over, exiting...");
 		} catch (Exception e) {
 			System.out.println(e);
